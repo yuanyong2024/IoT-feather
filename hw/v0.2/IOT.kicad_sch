@@ -1,0 +1,71 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid a6ff655f-285e-495a-9f3d-0c2e60b8700b)
+
+  (paper "A4")
+
+  (lib_symbols
+  )
+
+
+  (text "v0.1 Bug record:\n1. CHG_SB need to have a pull-up resistor \n2. No pull-up resistors for SDA and SCL line\n3. Need a ESD diode for power key button"
+    (at 151.765 135.89 0)
+    (effects (font (face "Arial") (size 2 2) (thickness 0.4) bold (color 255 0 0 1)) (justify left bottom))
+    (uuid 0359c74f-d449-4faf-b016-68fe38e5fe5d)
+  )
+
+  (sheet (at 55.88 41.91) (size 39.37 34.29) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 1642d687-ae69-4219-9a88-a808b8a284e1)
+    (property "Sheetname" "BG95" (at 55.88 41.1984 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "BG95.kicad_sch" (at 55.88 76.7846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "IOT"
+        (path "/a6ff655f-285e-495a-9f3d-0c2e60b8700b" (page "2"))
+      )
+    )
+  )
+
+  (sheet (at 149.86 29.21) (size 59.69 63.5) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 7da2af60-a7ec-4130-93a2-dcd1156ace80)
+    (property "Sheetname" "Power" (at 149.86 28.4984 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "Power.kicad_sch" (at 149.86 93.2946 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "IOT"
+        (path "/a6ff655f-285e-495a-9f3d-0c2e60b8700b" (page "3"))
+      )
+    )
+  )
+
+  (sheet (at 66.04 107.95) (size 46.99 49.53) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid cf7dafdd-a5c8-4fb8-9752-2a9a8819cf0f)
+    (property "Sheetname" "Interface" (at 66.04 107.2384 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "Interface.kicad_sch" (at 66.04 158.0646 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "IOT"
+        (path "/a6ff655f-285e-495a-9f3d-0c2e60b8700b" (page "4"))
+      )
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)
