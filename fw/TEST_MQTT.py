@@ -21,8 +21,10 @@ import log
 import checkNet
 from machine import Pin
 from machine import I2C 
+import misc
 
 from usr.CM1103 import *
+import quecgnss
 
 
 PROJECT_NAME = "QuecPython_MQTT_example"
@@ -43,47 +45,43 @@ def sub_cb(topic, msg):
     state = 1
 
 
-if __name__ == '__main__':
-    
-    analogSwitch = Pin(Pin.GPIO21,Pin.OUT,Pin.PULL_DISABLE,1)
-    i2c_obj = I2C(I2C.I2C1, I2C.STANDARD_MODE)
-    adc = CM1103(i2c_obj)
-    adc.write_config(mode=MODE.CONTINIOUS,mux=MUX.MUX_A0_GND,pga=PGA.PGA_4096)
-    print(adc.analogRead(A0))
-    print(adc.analogRead(A0))
-    print(adc.analogRead(A0))
+'''
+analogSwitch = Pin(Pin.GPIO21,Pin.OUT,Pin.PULL_DISABLE,1)
+i2c_obj = I2C(I2C.I2C1, I2C.STANDARD_MODE)
+adc = CM1103(i2c_obj)
+adc.write_config(mode=MODE.CONTINIOUS,mux=MUX.MUX_A0_GND,pga=PGA.PGA_4096)
+print(adc.analogRead(A0))
+'''
 
+#important notice
+#when trying to debug with MQTTX broker. it sometimes may show up something like The Broker has actively disconnected, Reason: Session taken over (Code: 142)
+#and one solution is click the timestamp icom on Cline ID location so that everything clicked a connect, it's a new connection and then it will not taken over by previous connection.
+if __name__ == '__main__':
     stagecode, subcode = checknet.wait_network_connected(30)
     if stagecode == 3 and subcode == 1:
         mqtt_log.info('Network connection successful!')
 
-
-        c = MQTTClient("umqtt_client_yuanyong2024", "broker.emqx.io", 1883)
-        #c = MQTTClient("tester1", "x116de01.ala.cn-hangzhou.emqxsl.cn", 8830)
+        # 创建一个mqtt实例
+        c = MQTTClient("mqttx_yuanyong2024", "broker.emqx.io", 1883)
+        #c = MQTTClient("umqtt_client", "mq.tongxinmao.com", 18830)
+        # 设置消息回调
         c.set_callback(sub_cb)
-
+        #建立连接
         c.connect()
-        '''
-        c.subscribe(b"/public/TEST/quecpython")
+        # 订阅主题
+        c.subscribe(b"/public/quecpython")
         mqtt_log.info("Connected to mq.tongxinmao.com, subscribed to /public/TEST/quecpython topic" )
-
-        c.publish(b"/public/TEST/quecpython", b"my name is Quecpython!")
-        mqtt_log.info("Publish topic: /public/TEST/quecpython, msg: my name is Quecpython")
-
+        # 发布消息
+        retry = 5
         while True:
-            c.wait_msg() 
-            if state == 1:
-                break
-        '''
-        repeat = 0
-        while True:
-            utime.sleep(2)
             c.publish(b"/public/TEST/quecpython", b"my name is Quecpython!")
-            mqtt_log.info("Publish topic: /public/TEST/quecpython, msg: my name is Quecpython") 
-            repeat+=1
-            if repeat>=10:
+            mqtt_log.info("Publish topic: /public/TEST/quecpython, msg: my name is Quecpython")
+            c.wait_msg()  #阻塞函数，监听消息
+            utime.sleep(1)
+            retry-=1
+            if retry==0:
                 break
-
+        # 关闭连接
         c.disconnect()
     else:
         mqtt_log.info('Network connection failed! stagecode = {}, subcode = {}'.format(stagecode, subcode))
